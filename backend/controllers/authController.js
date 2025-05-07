@@ -18,16 +18,17 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.getByEmail(email);
+        console.log(user);
         if (user.length === 0) {
             return res.status(401).json({ message: "Invalid email or password" });
         }
-        const isPasswordValid = await bcrypt.compare(password, user[0].password);
+        const isPasswordValid = await bcrypt.compare(password, user[0].user_password);
         if (!isPasswordValid) {
             return res.status(401).json({ message: "Invalid email or password" });
         }
-        const token = jwt.sign({ id: user[0].id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-        res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "Strict" });
-        res.json({ message: "Login successful", token });
+        const token = jwt.sign({ id: user[0].user_id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "Strict", maxAge: 3600000 });
+        res.json({ message: "Login successful"});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

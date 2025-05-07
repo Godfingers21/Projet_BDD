@@ -1,9 +1,10 @@
 const Rate = require('../models/rate');
 
 const createRate = async (req, res) => {
-    const rate = req.body;
+    const {boardgame_id, rate} = req.body;
+    const user_id = req.userId;
     try {
-        const newRate = await Rate.create(rate);
+        const newRate = await Rate.create({user_id, boardgame_id, rate});
         res.status(201).json(newRate);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -11,9 +12,10 @@ const createRate = async (req, res) => {
 };
 
 const updateRate = async (req, res) => {
-    const rate = req.body;
+    const {boardgame_id, rate} = req.body;
+    const user_id = req.userId;
     try {
-        const updatedRate = await Rate.update(rate);
+        const updatedRate = await Rate.update({user_id, boardgame_id, rate});
         if (updatedRate) {
             res.json(updatedRate);
         } else {
@@ -25,10 +27,10 @@ const updateRate = async (req, res) => {
 };
 
 const deleteRate = async (req, res) => {
-    const rate = req.body;
-    console.log(rate);
+    const {boardgame_id} = req.body;
+    const user_id = req.userId;
     try {
-        const deletedRate = await Rate.delete(rate);
+        const deletedRate = await Rate.delete({user_id, boardgame_id});
         if (deletedRate) {
             res.json(deletedRate);
         } else {

@@ -3,9 +3,8 @@ const { create } = require('./rate.js');
 
 const User = {
     create: (user) => {
-        console.log(user.username, user.email, user.password, user.role);
         return new Promise((resolve, reject) => {
-            db.query('INSERT INTO Users (username, email, password, role) VALUES (?, ?, ?, ?)', [user.username, user.email, user.password, user.role], (err, results) => {
+            db.query('INSERT INTO Users (username, email, user_password, user_role) VALUES (?, ?, ?, ?)', [user.username, user.email, user.password, user.role], (err, results) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -16,7 +15,7 @@ const User = {
     },
     update: (user) => {
         return new Promise((resolve, reject) => {
-            db.query('UPDATE Users SET username = ?, password = ?, email = ?, role = ?, WHERE id = ?', [user.username, user.password, user.email, user.role, user.id], (err, results) => {
+            db.query('UPDATE Users SET username = ?, user_password = ?, email = ?, user_role = ?, WHERE id = ?', [user.username, user.password, user.email, user.role, user.id], (err, results) => {
                 if (err) {
                     reject(err);
                 } else {
