@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const boardgameRoutes = require('./routes/boardgameRoutes');
+const rateRoutes = require('./routes/rateRoute');
+const authRoutes = require('./routes/authRoute');
+const userRoutes = require('./routes/userRoute');
 require('dotenv').config();
 
 const app = express();
@@ -17,7 +20,9 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/boardgames', boardgameRoutes);
-app.use('/api/rate', require('./routes/rateRoute'));
+app.use('/api/rate', rateRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
 
 const PORT = process.env.PORT || 3001;
 
