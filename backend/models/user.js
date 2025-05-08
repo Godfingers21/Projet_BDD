@@ -1,5 +1,5 @@
 const db = require('../config/db.js');
-const { create } = require('./rate.js');
+const { get } = require('../routes/boardgameRoutes.js');
 
 const User = {
     create: (user) => {
@@ -33,6 +33,17 @@ const User = {
                     resolve(results);
                 }
             }); 
+        });
+    },
+    getById: (id) => {
+        return new Promise((resolve, reject) => {
+            db.query('SELECT * FROM Users WHERE user_id = ?', [id], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results[0]);
+                }
+            });
         });
     },
     getByEmail: (email) => {

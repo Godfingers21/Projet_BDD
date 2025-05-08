@@ -2,9 +2,9 @@ const User = require('../models/user');
 
 
 const getUserById = async (req, res) => {
-    const { id } = req.params;
+    const userId = req.userId;
     try {
-        const user = await User.getById(id);
+        const user = await User.getById(userId);
         if (user) {
             res.json(user);
         } else {

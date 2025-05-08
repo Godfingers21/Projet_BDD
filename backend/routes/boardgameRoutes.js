@@ -4,5 +4,8 @@ const boardgameController = require('../controllers/boardgameController');
 
 router.get('/', boardgameController.getAllBoardGames);
 router.get('/:id', boardgameController.getBoardGameById);
+router.get('/category/:categoryId', boardgameController.getBoardGameByCategory);
+router.get('/publisher/:publisherId', boardgameController.getBoardGameByPublisher);
+router.get('/bgg/images/', boardgameController.getBoardGameImage);
 
 module.exports = router;
