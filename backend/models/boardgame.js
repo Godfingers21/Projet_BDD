@@ -1,13 +1,85 @@
 const db = require('../config/db');
 
 const BoardGame = {
-    getAll: (limit, offset) => {
+    getAll: (limit, offset, sort = 'name', category, publisher, players) => {
         return new Promise((resolve, reject) => {
-            db.query('SELECT * FROM BoardGame LIMIT ? OFFSET ?', [limit, offset], (err, results) => {
+            // Construire la requête de base
+            let query = 'SELECT DISTINCT BoardGame.* FROM BoardGame';
+            const params = [];
+
+            // Join si filtrage par catégorie ou éditeur
+            if (category) {
+                query += ' JOIN Classification ON BoardGame.boardgame_id = Classification.boardgame_id';
+            }
+            if (publisher) {
+                query += ' JOIN Publish ON BoardGame.boardgame_id = Publish.boardgame_id';
+            }
+
+            // Toujours filtrage mais le where
+            const conditions = [];
+            if (category) {
+                conditions.push('Classification.category_id = ?');
+                params.push(category);
+            }
+            if (publisher) {
+                conditions.push('Publish.publisher_id = ?');
+                params.push(publisher);
+            }
+            if (players) {
+                conditions.push('BoardGame.min_players <= ? AND BoardGame.max_players >= ?');
+                params.push(players, players);
+            }
+
+            if (conditions.length > 0) {
+                query += ' WHERE ' + conditions.join(' AND ');
+            }
+
+            // Trier les résultats si nécessaire
+            switch(sort) {
+                case 'ranked':
+                    query += ' ORDER BY BoardGame.ranked ASC';
+                    break;
+                case 'year':
+                    query += ' ORDER BY BoardGame.year_published DESC';
+                    break;
+                case 'name':
+                default:
+                    query += ' ORDER BY BoardGame.name ASC';
+            }
+
+            // Limiter et offset
+            query += ' LIMIT ? OFFSET ?';
+            params.push(limit, offset);
+
+            // Exécuter la requête
+            db.query(query, params, (err, results) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(results);
                 }
-                else {
+            });
+        });
+    },
+    
+    getAllCategories: () => {
+        return new Promise((resolve, reject) => {
+            db.query('SELECT * FROM Category ORDER BY category_name', (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    },
+    
+    getAllPublishers: () => {
+        return new Promise((resolve, reject) => {
+            db.query('SELECT * FROM Publisher ORDER BY publisher_name', (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
                     resolve(results);
                 }
             });

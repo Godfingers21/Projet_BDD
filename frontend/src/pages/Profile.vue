@@ -14,6 +14,5 @@ const { logout } = useAuth();
 async function handleLogout() {
   await logout();
   router.push("/");
-  window.location.reload();
 }
 </script>

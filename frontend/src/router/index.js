@@ -2,11 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../pages/HomePage.vue";
 import LoginRegister from "../pages/LoginRegister.vue";
 import Profile from "../pages/Profile.vue";
+import Catalog from "../pages/Catalog.vue"
 
 const routes = [
   { path: "/", component: HomePage },
   { path: "/login", component: LoginRegister },
-  { path: "/catalog", component: null },
+  { path: "/catalog", component: Catalog },
   { path: "/profile", component: Profile },
 ];
 

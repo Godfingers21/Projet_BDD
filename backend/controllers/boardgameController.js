@@ -5,15 +5,19 @@ const xml2js = require('xml2js');
 const getAllBoardGames = async(req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const offset = parseInt(req.query.offset) || 0;
+    const sort = req.query.sort || "name";
+    const category = req.query.category;
+    const publisher = req.query.publisher;
+    const players = req.query.players;
+    
     try {
-        const boardgames = await BoardGame.getAll(limit, offset);
+        const boardgames = await BoardGame.getAll(limit, offset, sort, category, publisher, players);
         res.json(boardgames);
     }
     catch(error){
         res.status(500).json({error : error.message});
     }
 };
-
 const getBoardGameById = async(req, res) => {
     const {id} = req.params;
     try {
@@ -52,6 +56,24 @@ const getBoardGameByPublisher = async(req, res) => {
     }
 };
 
+const getCategories = async(req, res) => {
+    try {
+        const categories = await BoardGame.getAllCategories();
+        res.json(categories);
+    } catch(error) {
+        res.status(500).json({error: error.message});
+    }
+};
+
+const getPublishers = async(req, res) => {
+    try {
+        const publishers = await BoardGame.getAllPublishers();
+        res.json(publishers);
+    } catch(error) {
+        res.status(500).json({error: error.message});
+    }
+};
+
 const getBoardGameImage = async(req, res) => {
     const {ids} = req.query;
     try {
@@ -75,6 +97,8 @@ const getBoardGameImage = async(req, res) => {
 
 
 module.exports = {
+    getCategories,
+    getPublishers,
     getBoardGameImage,
     getBoardGameByCategory,
     getBoardGameByPublisher,

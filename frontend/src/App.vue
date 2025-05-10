@@ -20,17 +20,20 @@ html, body, #app {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden; /* Empêche le scroll horizontal */
 }
 
 body {
-  /* Fond dégradé bleu sur toute la page */
-  min-height: 100vh;
-  background: linear-gradient(180deg, #0586fa 0%, #0072e3 100%);
+  background: #fff;
+  overflow-x: hidden; /* Empêche le scroll horizontal */
 }
+
 #app {
   text-align: center;
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden; /* Empêche le scroll horizontal */
 }
 </style>

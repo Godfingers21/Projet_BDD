@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import axios from "../axiosConfig";
+import axios from "../axiosconfig";
 
 export default {
   data() {

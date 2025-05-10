@@ -22,6 +22,11 @@ onMounted(() => {
 
 <style scoped>
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 92%;
+  z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: center;
