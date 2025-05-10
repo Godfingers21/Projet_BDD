@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import axios from "../axioscxonfig"; // Adjust the path as necessary
+import axios from "../axiosconfig"; // Adjust the path as necessary
 
 const isAuthenticated = ref(false);
 
