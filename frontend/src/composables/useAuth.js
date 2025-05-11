@@ -18,6 +18,13 @@ function logout() {
   });
 }
 
+function getUser() {
+  return axios.get("/user/me").then((response) => response.data);
+}
+
+function updateUser(userData) {
+  return axios.put("/user/update", userData).then((response) => response.data);
+}
 export default function useAuth() {
-  return { isAuthenticated, checkAuth, logout };
+  return { isAuthenticated, checkAuth, logout, getUser, updateUser };
 }
