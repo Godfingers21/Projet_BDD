@@ -1,4 +1,10 @@
 <template>
+  <main>
+    <HeroSection />
+  </main>
+  
+
+  <!--
   <div class="landing-container">
     <div class="overlay"></div>
     <div class="landing-content">
@@ -9,8 +15,13 @@
       <router-link to="/catalog" class="discover-btn">Discover</router-link>
     </div>
   </div>
+  -->
 </template>
 
+<script setup>
+  import HeroSection from '../components/HeroSection.vue';
+  
+</script>
 <style scoped>
 .landing-container {
   min-height: 100vh;

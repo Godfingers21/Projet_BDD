@@ -1,16 +1,25 @@
 <template>
   <nav class="navbar">
-    <h1>Kaya</h1>
-    <ul>
-      <li><router-link to="/">Home</router-link></li>
-      <li><router-link to="/catalog">Catalog</router-link></li>
-      <li v-if="!isAuthenticated"><router-link to="/login">Login/Register</router-link></li>
-      <li v-else><router-link to="/profile">Profile</router-link></li>
-    </ul>
+    <div class="nav-left">
+      <router-link to="/"><h1>Kaya</h1></router-link>
+    </div>
+    
+    <div class="nav-center">
+      <router-link to="/" class="nav-link">Home</router-link>
+      <router-link to="/catalog" class="nav-link">New Releases</router-link>
+      <router-link to="/catalog" class="nav-link">Catalog</router-link>
+      <router-link to="/aboutus" class="nav-link">About Us</router-link>
+
+    </div>
+    <div class="nav-right">
+      <router-link to="/login" v-if="!isAuthenticated" class="nav-link">Login/Register</router-link>
+      <router-link to="/profile" v-else class="nav-link">Profile</router-link>
+      <router-link to="/"><span class="material-symbols-outlined">shopping_bag</span></router-link>
+    </div>
   </nav>
 </template>
 
-<script setup>
+<script setup>  
 import { onMounted } from "vue";
 import useAuth from "../composables/useAuth";
 const { isAuthenticated, checkAuth } = useAuth();
@@ -22,61 +31,63 @@ onMounted(() => {
 
 <style scoped>
 .navbar {
+  font-family: 'Segoe UI', sans-serif;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 92%;
-  z-index: 2;
+  z-index: 100; /*au dessus de n importe quel element*/
+  margin: 0;
+  padding: 1rem 0;
+  width:100vw;
+  height: 50px;
+  color: black;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 48px;
-  background: rgba(44, 62, 80, 0.85); /* Fond semi-transparent */
-  border-radius: 18px;
-  margin: 24px 32px 32px 32px;
-  box-shadow: 0 4px 18px rgba(44, 62, 80, 0.12);
-  backdrop-filter: blur(2px);
+  background: rgb(255, 255, 255); 
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.navbar h1 {
-  font-size: 2rem;
-  color: #fff;
-  letter-spacing: 2px;
-  font-weight: 700;
-  margin: 0;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.08);
+a{
+  text-decoration: none;
+}
+.nav-left {
+  margin-left: 60px ;
+}
+.navbar .nav-left h1 {
+  font-size: 1.7rem;
+  font-weight: 500;
+  color: black;
 }
 
-.navbar ul {
-  list-style: none;
+.navbar .nav-link{
+  margin: 0 1rem;
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  
+}
+.navbar .nav-link:hover {
+  transition: 0.5s;
+  color: #53cf90;
+}
+
+.nav-center{
   display: flex;
-  gap: 28px;
-  margin: 0;
-  padding: 0;
+  align-items: center;
 }
-
-.navbar ul li {
+.nav-right{
+  margin-right: 60px;
   display: flex;
   align-items: center;
 }
 
-.navbar ul li a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 1.08rem;
-  font-weight: 500;
-  padding: 8px 18px;
-  border-radius: 8px;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.04);
-}
-
-.navbar ul li a.router-link-exact-active,
-.navbar ul li a:hover {
-  background: rgba(255,255,255,0.18);
-  color: #ffe082;
-  box-shadow: 0 4px 16px rgba(44, 62, 80, 0.10);
-  text-decoration: none;
+.material-symbols-outlined {
+  color: black;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
 }
 
 @media (max-width: 700px) {
