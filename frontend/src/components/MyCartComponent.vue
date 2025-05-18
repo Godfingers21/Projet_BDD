@@ -144,7 +144,6 @@ main{
     display: flex;
     flex-direction: row;
     align-items: top;
-
 }
 .mycart-component{
     height: 80vh;

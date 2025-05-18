@@ -14,19 +14,32 @@
     <div class="nav-right">
       <router-link to="/login" v-if="!isAuthenticated" class="nav-link">Login/Register</router-link>
       <router-link to="/profile" v-else class="nav-link">Profile</router-link>
-      <router-link to="/cart"><span class="material-symbols-outlined">shopping_bag</span></router-link>
+      <router-link to="/cart">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
+      </router-link>
     </div>
   </nav>
 </template>
 
 <script setup>  
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import useAuth from "../composables/useAuth";
+
 const { isAuthenticated, checkAuth } = useAuth();
+const cartCount = ref(0);
+
+const updateCartCount = () => {
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  cartCount.value = cart.reduce((total, item) => total + item.quantity, 0);
+};
 
 onMounted(() => {
   checkAuth();
+  updateCartCount();
+  window.addEventListener("storage", updateCartCount);
 });
+
 </script>
 
 <style scoped>
@@ -95,6 +108,20 @@ a{
   color: #227b4e;
 }
 
+.cart-badge {
+  position: absolute;
+  top: 18px;
+  right: 43px;
+  background-color: red;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 2px 2px;
+  border-radius: 999px;
+  min-width: 20px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
 
 @media (max-width: 700px) {
   .navbar {
