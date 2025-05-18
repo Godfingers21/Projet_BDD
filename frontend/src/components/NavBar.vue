@@ -14,7 +14,7 @@
     <div class="nav-right">
       <router-link to="/login" v-if="!isAuthenticated" class="nav-link">Login/Register</router-link>
       <router-link to="/profile" v-else class="nav-link">Profile</router-link>
-      <router-link to="/"><span class="material-symbols-outlined">shopping_bag</span></router-link>
+      <router-link to="/cart"><span class="material-symbols-outlined">shopping_bag</span></router-link>
     </div>
   </nav>
 </template>
@@ -37,7 +37,7 @@ onMounted(() => {
   margin: 0;
   padding: 1rem 0;
   width:100vw;
-  height: 50px;
+  height: 40px;
   color: black;
   display: flex;
   justify-content: space-between;
@@ -82,13 +82,19 @@ a{
 }
 
 .material-symbols-outlined {
-  color: black;
+  color: #53cf90;
   font-variation-settings:
   'FILL' 0,
-  'wght' 400,
+  'wght' 500,
   'GRAD' 0,
   'opsz' 24
 }
+
+.material-symbols-outlined:hover {
+  transition: 0.5s;
+  color: #227b4e;
+}
+
 
 @media (max-width: 700px) {
   .navbar {

@@ -1,36 +1,37 @@
 <template>
   <footer class="footer">
     <div class="footer-content">
-        <div class="logo-container">
-            <h1 class="logo">Kaya</h1>
-        </div>
+      <div class="logo-container">
+        <h1 class="logo">Kaya</h1>
+      </div>
+
       <div class="footer-column">
         <h3>Find out more</h3>
         <ul>
-          <li><a href="#">New Releases</a></li>
-          <li><a href="#">Trending</a></li>
-          <li><a href="#">Our Catalog</a></li>
-          <li><a href="#">1v1 Games</a></li>
-          <li><a href="#">Family Games</a></li>
+          <li><router-link to="/catalog">New Releases</router-link></li>
+          <li><router-link to="#">Trending</router-link></li>
+          <li><router-link to="#">Our Catalog</router-link></li>
+          <li><router-link to="#">1v1 Games</router-link></li>
+          <li><router-link to="#">Family Games</router-link></li>
         </ul>
       </div>
 
       <div class="footer-column">
         <h3>Your Account</h3>
         <ul>
-          <li><a href="#">My Account</a></li>
-          <li><a href="#">See My Orders</a></li>
-          <li><a href="#">Track My Order</a></li>
-          <li><a href="#">Preferences and settings</a></li>
+          <li><router-link to="/login">My Account</router-link></li>
+          <li><router-link to="#">See My Orders</router-link></li>
+          <li><router-link to="#">Track My Order</router-link></li>
+          <li><router-link to="#">Preferences and settings</router-link></li>
         </ul>
       </div>
 
       <div class="footer-column">
         <h3>About Us</h3>
         <ul>
-          <li><a href="#">Who are we?</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
+          <li><router-link to="#">Who are we?</router-link></li>
+          <li><router-link to="#">Privacy Policy</router-link></li>
+          <li><router-link to="#">Terms of Service</router-link></li>
         </ul>
       </div>
 
@@ -49,6 +50,16 @@
     </div>
   </footer>
 </template>
+
+<script setup>
+import { onMounted } from "vue";
+import useAuth from "../composables/useAuth"; 
+
+const { isAuthenticated, checkAuth } = useAuth();
+onMounted(() => {
+  checkAuth();
+});
+</script>
 
 <style scoped>
 .footer {
@@ -70,8 +81,8 @@
   margin-left: 50px;
 }
 
-.footer-content{
-    text-align: left;
+.footer-content {
+  text-align: left;
 }
 
 .footer-column h3 {
@@ -89,13 +100,15 @@
   margin-bottom: 0.5rem;
 }
 
-.footer-column a {
+.footer-column a,
+.footer-column router-link {
   text-decoration: none;
   color: white;
   transition: 0.3s;
 }
 
-.footer-column a:hover {
+.footer-column a:hover,
+.footer-column router-link:hover {
   color: #53cf90;
 }
 

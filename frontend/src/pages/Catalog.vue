@@ -1,7 +1,8 @@
 <template>
+  <HeaderImage imageUrl='../asset/header-catalog-image.jpg' />
   <div class="catalog-container">
     <div class="catalog-header">
-      <h1>Board Games Collection</h1>
+      <h1 class="catalog-title">Board Games Collection</h1>
 
       <!-- Filter & Sort Button --> 
 
@@ -112,6 +113,7 @@
             <span>{{ game.year_published || 'N/A' }}</span>
             <span>{{ game.min_players }}-{{ game.max_players }} players</span>
           </div>
+          <p class="game-price">$ {{ getPriceForGame(game) }}</p>
         </div>
         <div class="game-description" :class="{ 'visible': hoveredGame === game.boardgame_id }">
           <h3>{{ game.name }}</h3>
@@ -146,8 +148,18 @@
       
       <div class="game-modal-info">
         <h2>{{ selectedGame.name }}</h2>
-        
+      <div class="modal-price">
+            <span>$ {{ getPriceForGame(selectedGame) }}</span>
+      </div>
         <div class="game-specs">
+          <div class="spec-item">
+            <span class="spec-label">Rating:</span>
+            <div class="star-rating">
+              <span v-for="i in 5" :key="i" class="star" :class="{ 'filled': i <= Math.round(selectedGame.average / 2) }">★</span>
+              <span class="rating-number">({{ (selectedGame.average || 0).toFixed(1) }}/10)</span>
+            </div>
+          </div>
+
           <div class="spec-item">
             <span class="spec-label">Year:</span>
             <span>{{ selectedGame.year_published || 'N/A' }}</span>
@@ -163,28 +175,24 @@
             <span>{{ selectedGame.min_age }}+</span>
           </div>
           
-          <div class="spec-item">
-            <span class="spec-label">Rating:</span>
-            <div class="star-rating">
-              <span v-for="i in 5" :key="i" class="star" :class="{ 'filled': i <= Math.round(selectedGame.average / 2) }">★</span>
-              <span class="rating-number">({{ (selectedGame.average || 0).toFixed(1) }}/10)</span>
-            </div>
-          </div>
+          
           
           <div class="spec-item">
             <span class="spec-label">Categories:</span>
             <span>{{ getGameCategories(selectedGame.boardgame_id) }}</span>
           </div>
         </div>
-        
+
+        <button class="buy-button" @click="buyGame(selectedGame)">
+          Add to cart
+        </button>
+
         <div class="game-description-modal">
           <h3>Description</h3>
           <p>{{ selectedGame.description }}</p>
         </div>
         
-        <button class="buy-button" @click="buyGame(selectedGame)">
-          Buy Now
-        </button>
+        
       </div>
     </div>
   </div>
@@ -196,13 +204,20 @@
 
 <script>
 import axios from "../axiosconfig";
+import HeaderImage from '../components/HeaderComponent.vue'
+import useAuth from '../composables/useAuth.js';
 
 export default {
+    components: {
+    HeaderImage
+  },
+
+
   data() {
     return {
       boardgames: [],
       currentPage: 1,
-      gamesPerPage: 8,
+      gamesPerPage: 20,
       loading: false,
       hoveredGame: null,
       categories: [],
@@ -215,6 +230,16 @@ export default {
       gameCategories: {},
       filtersVisible: false
     };
+  },
+  setup() {
+    const { isAuthenticated, checkAuth } = useAuth();
+    return { isAuthenticated, checkAuth };
+  },
+  mounted() {
+    this.checkAuth(); 
+    this.fetchCategories();
+    this.fetchPublishers();
+    this.fetchBoardgames();
   },
   computed: {
     hasActiveFilters() {
@@ -310,6 +335,17 @@ export default {
       }
     },
 
+    getPriceForGame(game) {
+      const average = parseFloat(game.average);
+      if (!average || isNaN(average)) return "Contact the support for price";
+
+      const constant = 5.38;
+      return (average + constant).toFixed(2);
+
+    },
+
+
+
     showGameDetails(game) {
       this.selectedGame = game;
       document.body.style.overflow = 'hidden'; // Empêcher le scroll de la page
@@ -333,9 +369,26 @@ export default {
     },
   
     buyGame(game) {
-      alert(`Feature coming soon: You'll be able to buy ${game.name} here!`);
-      // Dans le futur, rediriger vers la page d'achat
-      // this.$router.push(`/checkout/${game.boardgame_id}`);
+      if (!this.isAuthenticated) {
+        this.$router.push("/login");
+        return;
+      }
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const existing = cart.find(item => item.boardgame_id === game.boardgame_id);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({
+          boardgame_id: game.boardgame_id,
+          name: game.name,
+          price: this.getPriceForGame(game),
+          category: this.getGameCategories(game.boardgame_id),
+          image: game.image || game.thumbnail,
+          quantity: 1
+        });
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(`${game.name} added to cart!`);
     },
 
     getCategoryName(categoryId) {
@@ -432,9 +485,9 @@ export default {
   margin-bottom: 24px;
 }
 
-.catalog-header h1 {
+.catalog-header .catalog-title {
   font-size: 2rem;
-  color: #2c3e50;
+  color: #53cf90;
   margin: 0;
   text-align: left;
 }
@@ -442,7 +495,7 @@ export default {
 .filter-button {
   display: inline-flex;
   align-items: center;
-  background: #2c3e50;
+  background: #757575;
   color: white;
   padding: 10px 18px;
   border-radius: 6px;
@@ -453,7 +506,7 @@ export default {
 }
 
 .filter-button:hover {
-  background: #1e2a36;
+  background: #595959;
 }
 
 .filter-icon {
@@ -494,7 +547,7 @@ export default {
 .filter-group label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: #757575;
   margin-bottom: 8px;
   text-align: left;
 }
@@ -503,7 +556,7 @@ export default {
 .filter-group input {
   padding: 10px 12px;
   border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: 2rem;
   background: white;
   font-size: 0.95rem;
 }
@@ -512,8 +565,9 @@ export default {
   background: #e74c3c;
   color: white;
   border: none;
+  width: 400px;
   padding: 10px 18px;
-  border-radius: 6px;
+  border-radius: 2rem;
   cursor: pointer;
   font-weight: 500;
   margin-top: 20px;
@@ -534,7 +588,7 @@ export default {
 }
 
 .active-filters > span {
-  color: #2c3e50;
+  color: #757575;
   font-weight: 600;
   margin-right: 8px;
 }
@@ -543,7 +597,7 @@ export default {
   display: inline-flex;
   align-items: center;
   background: #e8f4f8;
-  color: #2c3e50;
+  color: #757575;
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 0.85rem;
@@ -569,7 +623,7 @@ export default {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border-left-color: #2c3e50;
+  border-left-color: #757575;
   animation: spin 1s linear infinite;
 }
 
@@ -600,7 +654,7 @@ export default {
   background: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s;
-  height: 340px; /* Fixed height for uniformity */
+  height: 370px; /* Fixed height for uniformity */
 }
 
 .game-card:hover {
@@ -614,7 +668,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8f9fa;
+  background: #ffffff;
 }
 
 .game-card img {
@@ -623,15 +677,19 @@ export default {
   object-fit: contain;
 }
 
+.game-price{
+  font-size: 1.3rem;
+  font-weight: bold;
+}
 .card-info {
-  padding: 15px;
+  padding: 15px 25px;
   text-align: left;
 }
 
 .card-info h3 {
   margin: 0 0 8px 0;
   font-size: 1.1rem;
-  color: #2c3e50;
+  color: #000000;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -651,7 +709,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(44, 62, 80, 0.95);
+  background: #757575;
   color: white;
   padding: 20px;
   opacity: 0;
@@ -687,9 +745,10 @@ export default {
 }
 
 .page-btn {
-  background: #3498db;
+  background: #53cf90;
   color: white;
   border: none;
+  width: 300px;
   padding: 10px 20px;
   border-radius: 6px;
   cursor: pointer;
@@ -698,7 +757,7 @@ export default {
 }
 
 .page-btn:hover:not(:disabled) {
-  background: #2980b9;
+  background: #227b4e;
 }
 
 .page-btn:disabled {
@@ -774,16 +833,23 @@ export default {
   flex-direction: column;
 }
 
+.modal-price{
+  font-size: 1.8rem;
+  font-weight: 150;
+  text-align: left;
+  margin: 0 0 20px 50px;
+}
 .close-modal {
   position: absolute;
   top: 15px;
-  right: 20px;
   background: none;
   border: none;
   font-size: 24px;
-  color: #2c3e50;
+  color: #757575;
   cursor: pointer;
   z-index: 102;
+  text-align: right;
+  padding-right: 20px;
 }
 
 .game-modal-content {
@@ -796,12 +862,15 @@ export default {
 }
 
 .game-modal-image {
+  position: sticky;
+  top: 80px;
+  align-self: flex-start;
+  flex-shrink: 0;
+  width: 100%; 
+  max-height: calc(90vh - 60px);
   display: flex;
-  align-items: center;
   justify-content: center;
-  background: #f8f9fa;
-  border-radius: 8px;
-  overflow: hidden;
+  background: #fff;
 }
 
 .game-modal-image img {
@@ -817,8 +886,10 @@ export default {
 
 .game-modal-info h2 {
   font-size: 1.8rem;
-  margin: 0 0 20px;
-  color: #2c3e50;
+  margin: 15px 0 20px 0;
+  color: #000000;
+  text-align: left;
+  margin-left: 10px;
 }
 
 .game-specs {
@@ -842,7 +913,7 @@ export default {
 .star-rating {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .star {
@@ -863,30 +934,30 @@ export default {
 }
 
 .game-description-modal {
-  margin-top: 10px;
+  margin: 10px 10px;
   margin-bottom: 30px;
 }
 
 .game-description-modal h3 {
   font-size: 1.1rem;
   margin: 0 0 10px;
-  color: #2c3e50;
+  color: #000000;
+  text-align: left;
 }
 
 .game-description-modal p {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: #34495e;
-  max-height: 200px;
-  overflow-y: auto;
+  color: #000000;
+  text-align: justify;
 }
 
 .buy-button {
-  margin-top: auto;
+  margin: 20px 10px;
   background: #27ae60;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 2rem;
   padding: 12px 20px;
   font-size: 1rem;
   font-weight: 600;

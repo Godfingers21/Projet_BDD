@@ -3,7 +3,7 @@
       <div class="hero-content">
         <h1>Kaya</h1>
         <p>Games that create <span class="highlight">memories</span>, not just winners.</p>
-        <router-link to="/catalog"><button class="cta">Discover</button></router-link>
+        <router-link to="/catalog" class="cta">Discover</router-link>
       </div>
     </section>
   </template>
@@ -34,12 +34,12 @@
   }
   
   .hero-content {
-    position: relative;
+    position: center;
     z-index: 2;
   }
   
   .hero h1 {
-    font-size: 4rem;
+    font-size: 3.8rem;
     margin-bottom: 1rem;
   }
   
@@ -53,7 +53,8 @@
     color: #53cf90;
   }
   
-  .cta {
+  .hero-content .cta {
+    text-decoration: none;
     padding: 0.75rem 2.5rem;
     font-size: 1rem;
     border: 3px solid white;

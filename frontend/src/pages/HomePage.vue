@@ -23,6 +23,7 @@
   
 </script>
 <style scoped>
+/*
 .landing-container {
   min-height: 100vh;
   width: 100vw;
@@ -52,7 +53,7 @@
   max-width: 600px;
   margin-left: 8vw;
   margin-top: 8vh;
-  /* Pour éviter d'être trop collé au bord */
+  /* Pour éviter d'être trop collé au bord 
 }
 
 .landing-content h1 {
@@ -96,7 +97,7 @@
   color: #0586fa;
   border-color: #fff;
 }
-
+*/
 @media (max-width: 900px) {
   .landing-content {
     margin-left: 3vw;
