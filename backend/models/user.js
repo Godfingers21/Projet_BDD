@@ -15,7 +15,7 @@ const User = {
     },
     update: (user) => {
         return new Promise((resolve, reject) => {
-            db.query('UPDATE Users SET username = ?, user_password = ?, email = ?, user_role = ?, WHERE id = ?', [user.username, user.password, user.email, user.role, user.id], (err, results) => {
+            db.query('UPDATE Users SET username = ?, user_password = ?, email = ?, user_role = ? WHERE user_id = ?', [user.username, user.password, user.email, user.role, user.id], (err, results) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -26,7 +26,7 @@ const User = {
     },
     delete: (user) => {
         return new Promise((resolve, reject) => {
-            db.query('DELETE FROM Users WHERE id = ?', [user.id], (err, results) => {
+            db.query('DELETE FROM Users WHERE user_id = ?', [user.id], (err, results) => {
                 if (err) {
                     reject(err);
                 } else {
