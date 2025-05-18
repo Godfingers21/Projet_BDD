@@ -23,6 +23,9 @@
                   </div>
                 </div>
                 <div class="details-order">
+                  <div class="info-price">
+                    <span class="item-price">${{ item.price }}</span>
+                  </div>
                   <div class="quantity-wrapper">
                     <button v-if="item.quantity > 1" @click="removeItem(item)">−</button>
                     <button v-else class="delete-btn" @click="deleteItem(item)">
@@ -35,20 +38,40 @@
 
                     <button @click="addItem(item)">+</button>
                   </div>
-                  <div class="info-price">
-                    <span class="item-price">${{ item.price }}</span>
-                  </div>
+                  
                 </div>
                 
               </div>
             </div>
 
             <div class="payment-component">
-              	<h2>Summary</h2>
+              <h2>Summary</h2>
+
+              <div class="line">
                 <span>Subtotal</span>
+                <span>${{ getSubtotal() }}</span>
+              </div>
+
+              <div class="line">
                 <span>Estimated Shipping & Handling</span>
+                <span>$4.50</span> <!--Pareil pour tout le monde meme en alaska-->
+              </div>
+
+              <div class="line">
+                <span class="span-taxe">Taxes</span>
+                <span class="span-taxe">${{ getTax() }}</span>
+              </div>
+
+              <div class="divider-line"></div>
+
+              <div class="line total">
                 <span>Total</span>
+                <span>${{ getTotalWithTax() }}</span>
+              </div>
+
+              <button class="checkout-btn">Checkout</button>
             </div>
+
         </div>
     </main>
 </template>
@@ -89,6 +112,23 @@ export default {
     deleteItem(item) {
       this.cart = this.cart.filter(i => i.boardgame_id !== item.boardgame_id);
       this.saveCart();
+    },
+    getSubtotal() {
+      return this.cart
+        .reduce((acc, item) => acc + item.price * item.quantity, 0)
+        .toFixed(2);
+    },
+    getTax() { //vous aimez ? c'est francais (bruh)
+      const subtotal = parseFloat(this.getSubtotal());
+      const shipping = 4.5;
+      const tax = (subtotal + shipping) * 0.2;
+      return tax.toFixed(2);
+    },
+    getTotalWithTax() {
+      const subtotal = parseFloat(this.getSubtotal());
+      const shipping = 4.5;
+      const tax = parseFloat(this.getTax());
+      return (subtotal + shipping + tax).toFixed(2);
     }
   }
 }
@@ -112,16 +152,7 @@ main{
     margin-right: 20px;
 
 }   
-.payment-component{
-    height: 200px;
-    width: 30vw;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    background-color: aqua;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    padding-left: 20px;
-}
+
 .mycart-component h2{
   text-align: left;
   margin-left: 20px;
@@ -225,10 +256,65 @@ main{
 }
 
 .info-price{
-  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .item-price{
   font-weight: bolder;
 }
 
+/*-----------------------------------Payement-------------------------------------------------*/
+.payment-component {
+  height: auto;
+  width: 30vw;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  font-family: Arial, sans-serif;
+}
+
+.payment-component h2 {
+  text-align: left;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+.line.total {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+.divider-line {
+  border-bottom: 1px solid #ddd;
+  margin: 20px 0;
+}
+
+.checkout-btn {
+  width: 100%;
+  background-color: #53cf90;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.3s;
+}
+
+.checkout-btn:hover {
+  background-color: #3cb877;
+}
+
+.span-taxe{
+  color: grey;
+}
 </style>
