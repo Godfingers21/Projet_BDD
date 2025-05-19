@@ -69,7 +69,7 @@
                 <span>${{ getTotalWithTax() }}</span>
               </div>
 
-              <button class="checkout-btn">Checkout</button>
+              <router-link to="/payment"><button class="checkout-btn">Checkout</button></router-link>
             </div>
 
         </div>

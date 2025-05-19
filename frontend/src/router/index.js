@@ -5,13 +5,16 @@ import Profile from "../pages/Profile.vue";
 import Catalog from "../pages/Catalog.vue";
 import AboutUs from "../pages/AboutUsView.vue";
 import Cart from "../pages/CartView.vue"
+import Payment from "../pages/PaymentView.vue";
 const routes = [
   { path: "/", component: HomePage },
   { path: "/login", component: LoginRegister, meta: { hideFooter: true } },
   { path: "/catalog", component: Catalog },
   { path: "/profile", component: Profile },
   { path: "/aboutus", component: AboutUs },
-  { path: "/cart", component: Cart }
+  { path: "/cart", component: Cart },
+  { path: "/payment", component: Payment}
+
 ];
 
 const router = createRouter({
