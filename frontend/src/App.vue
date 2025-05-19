@@ -2,7 +2,7 @@
   <div id="app">
     <NavBar v-if="$route.path !== '/login'" />
     <router-view />
-    <FooterComponent />
+    <FooterComponent v-if="!$route.meta.hideFooter"/>
   </div>
 </template>
 

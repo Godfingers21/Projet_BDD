@@ -1,30 +1,54 @@
 <template>
-  <div class="auth-container">
-    <div class="auth-box">
-      <div class="auth-toggle">
-        <span :class="{ active: isLogin }" @click="isLogin = true">Login</span>
-        <span :class="{ active: !isLogin }" @click="isLogin = false">Register</span>
+  <main>
+    <!-- Section formulaire -->
+    <div class="form-section">
+      
+      <div class="form-wrapper">
+        <div class="logo-container">
+          <router-link to="/"><h1 class="logo">Kaya</h1></router-link>
+        </div>
+        <h2>{{ isLogin ? 'Log In' : 'Create Your Account' }}</h2>
+
+        <p class="form-subtitle">
+          {{ isLogin ? 'Welcome back! Please log in.' : 'Fill in the details to register' }}
+        </p>
+
+        <form @submit.prevent="isLogin ? handleLogin() : handleRegister()">
+          <div v-if="!isLogin" class="input-box">
+            <input type="text" placeholder="Create a username" v-model="username" required />
+          </div>
+          <div class="input-box">
+            <input type="email" placeholder="Your email address" v-model="email" required />
+          </div>
+          <div class="input-box">
+            <input type="password" placeholder="Create a password" v-model="password" required />
+          </div>
+          <div v-if="!isLogin" class="input-box">
+            <input
+              type="password"
+              placeholder="Confirm your password"
+              v-model="confirmPassword"
+              required
+            />
+          </div>
+
+          <button class="main-button" type="submit">{{ isLogin ? 'Log In' : 'Register' }}</button>
+
+          <p class="toggle-text">
+            {{ isLogin ? "Don't have an account?" : "Already have an account?" }}
+            <span @click="isLogin = !isLogin">{{ isLogin ? "Register" : "Log In" }}</span>
+          </p>
+
+          <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
+        </form>
       </div>
-      <form @submit.prevent="isLogin ? handleLogin() : handleRegister()">
-        <h2>{{ isLogin ? 'Login' : 'Register' }}</h2>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" v-model="email" required />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" required />
-        </div>
-        <div v-if="!isLogin" class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" v-model="username" required />
-        </div>
-        <button type="submit">{{ isLogin ? 'Login' : 'Register' }}</button>
-        <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
-      </form>
-      <router-link to="/" class="back-to-home">← Back to Homepage</router-link>
     </div>
-  </div>
+
+    <!-- Section image -->
+    <div class="image-section">
+      <img src="../assets/boardgame-photo-login.jpg" alt="Boardgame scene" />
+    </div>
+  </main>
 </template>
 
 <script>
@@ -38,8 +62,10 @@ export default {
       password: "",
       username: "",
       errorMessage: "",
+      confirmPassword: "",
     };
   },
+
   methods: {
     async handleLogin() {
       try {
@@ -54,6 +80,10 @@ export default {
       }
     },
     async handleRegister() {
+      if (this.password !== this.confirmPassword) {
+        this.errorMessage = "Passwords do not match.";
+        return;
+      }
       try {
         await axios.post("/auth/register", {
           email: this.email,
@@ -65,75 +95,95 @@ export default {
       } catch (error) {
         this.errorMessage = error.response?.data?.message || "Registration failed.";
       }
-    },
+    }
   },
+  watch: {
+    isLogin(newVal) {
+      this.errorMessage = "";
+      this.confirmPassword = "";
+      this.email = "";
+      this.password = "";
+      this.username = "";
+    }
+  }
+
 };
 </script>
 
-<style>
-.auth-container {
+<style scoped>
+main {
   display: flex;
+  height: 100vh;
+}
+
+.form-section {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f4f4f4;
+  background: #fff;
 }
 
-.auth-box {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  text-align: center;
+.form-wrapper {
+  width: 80%;
+  max-width: 400px;
+  padding: 2rem;
+  border-radius: 12px;
+  box-sizing: border-box;
 }
 
-.auth-toggle {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+.form-wrapper h2 {
+  font-size: 28px;
+  margin-bottom: 0.5rem;
 }
 
-.auth-toggle span {
-  cursor: pointer;
-  font-weight: bold;
-  color: #aaa;
-}
-
-.auth-toggle span.active {
-  color: #007bff;
-}
-
-.form-group {
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
+.form-subtitle {
   font-size: 14px;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.input-box {
+  margin-bottom: 1rem;
 }
 
 input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
 }
 
-button {
+.main-button {
   width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
+  padding: 12px;
   border: none;
-  border-radius: 5px;
+  border-radius: 9999px;
+  background-color: #53cf90; 
+  color: white;
+  font-size: 16px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
-button:hover {
-  background-color: #0056b3;
+.main-button:hover {
+  background-color: #43b67d;
+}
+
+.toggle-text {
+  margin-top: 1rem;
+  font-size: 14px;
+  color: #555;
+}
+
+.toggle-text span {
+  color: #53cf90;
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 5px;
 }
 
 .error-message {
@@ -142,15 +192,23 @@ button:hover {
   font-size: 14px;
 }
 
-.back-to-home {
-  display: block;
-  margin-top: 20px;
-  color: #007bff;
-  text-decoration: none;
-  font-size: 14px;
+.image-section {
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.back-to-home:hover {
-  text-decoration: underline;
+.image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+a{
+  text-decoration: none;
+}
+.logo{
+  color:#53cf90;
+  font-size: 2.8rem;
 }
 </style>
