@@ -5,7 +5,7 @@ const boardgameRoutes = require('./routes/boardgameRoutes');
 const rateRoutes = require('./routes/rateRoute');
 const authRoutes = require('./routes/authRoute');
 const userRoutes = require('./routes/userRoute');
-const buyRoutes = require('./routes/buyRoutes');
+const buyRoutes = require('./routes/buyRoute');
 require('dotenv').config();
 
 const app = express();
