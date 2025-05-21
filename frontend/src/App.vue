@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NavBar v-if="$route.path !== '/login'" />
+    <NavBar v-if="$route.path !== '/login' && !$route.meta.hideNavbar " />
     <router-view />
     <FooterComponent v-if="!$route.meta.hideFooter"/>
   </div>

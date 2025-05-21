@@ -5,7 +5,9 @@ const boardgameRoutes = require('./routes/boardgameRoutes');
 const rateRoutes = require('./routes/rateRoute');
 const authRoutes = require('./routes/authRoute');
 const userRoutes = require('./routes/userRoute');
-const buyRoutes = require('./routes/buyRoutes');
+//const buyRoutes = require('./routes/buyRoutes');
+const orderRoutes = require('./routes/orderRoute');
+
 require('dotenv').config();
 
 const app = express();
@@ -24,7 +26,9 @@ app.use('/api/boardgames', boardgameRoutes);
 app.use('/api/rate', rateRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
-app.use('/api/buy', buyRoutes);
+//app.use('/api/buy', buyRoutes);
+app.use('/api/orders', orderRoutes);
+
 
 const PORT = process.env.PORT || 3001;
 
