@@ -60,6 +60,42 @@ const createOrder = async (req, res) => {
   }
 };
 
+const getMyOrders = async (req, res) => {
+  const user_id = req.userId;
+
+  try {
+    const conn = await db.getConnection();
+
+    // Récupérer toutes les commandes de l'utilisateur
+    const [orders] = await conn.query(
+      'SELECT * FROM Orders WHERE user_id = ? ORDER BY created_at DESC',
+      [user_id]
+    );
+
+    for (const order of orders) {
+      // Pour chaque commande, récupérer les items associés + nom du jeu
+      const [items] = await conn.query(
+        `SELECT oi.boardgame_id, oi.quantity, oi.price, bg.name 
+         FROM OrderItem oi
+         JOIN BoardGame bg ON oi.boardgame_id = bg.boardgame_id
+         WHERE oi.order_id = ?`,
+        [order.order_id]
+      );
+
+      // Ajouter les items et calculer le total
+      order.items = items;
+      order.total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    }
+
+    conn.release();
+    res.json(orders);
+  } catch (err) {
+    console.error('Erreur lors de la récupération des commandes :', err);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+};
+
 module.exports = {
-  createOrder
+  createOrder,
+  getMyOrders
 };

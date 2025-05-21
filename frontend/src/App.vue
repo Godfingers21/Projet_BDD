@@ -1,8 +1,8 @@
-<template>
+<<template>
   <div id="app">
-    <NavBar v-if="$route.path !== '/login' && !$route.meta.hideNavbar " />
+    <NavBar v-if="!hideNavbar" />
     <router-view />
-    <FooterComponent v-if="!$route.meta.hideFooter"/>
+    <FooterComponent v-if="!hideFooter" />
   </div>
 </template>
 
@@ -16,28 +16,33 @@ export default {
     NavBar,
     FooterComponent,
   },
+  computed: {
+    hideFooter() {
+      return this.$route.meta.hideFooter === true;
+    },
+    hideNavbar() {
+      return this.$route.meta.hideNavbar === true || this.$route.path === '/login';
+    }
+  }
 };
 </script>
+
 
 <style>
 html, body, #app {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Empêche le scroll horizontal */
+  overflow-x: hidden;
 }
 
 body {
   background: #fff;
-  overflow-x: hidden; /* Empêche le scroll horizontal */
 }
 
 #app {
   text-align: center;
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
   min-height: 100vh;
-  overflow-x: hidden; /* Empêche le scroll horizontal */
 }
 </style>
