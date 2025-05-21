@@ -30,17 +30,23 @@
                 <p>Email: {{ user.email }}</p>
             </div>
             <button @click="showPasswordForm = !showPasswordForm" class="edit-btn">
-              {{ showPasswordForm ? 'Cancel' : 'Edit Password' }}
+              {{ showPasswordForm ? 'Cancel' : 'Edit' }}
             </button>
           </div>
         </div>
 
+        <button @click="handleLogout" class="Btn">
+          <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+          <div class="text">Logout</div>
+        </button>
+
         <div class="edit-password">
 
 
-          <form v-if="showPasswordForm" @submit.prevent="changePassword">
-            <input type="password" v-model="oldPassword" placeholder="Current Password" required />
-            <input type="password" v-model="newPassword" placeholder="New Password" required />
+          <form v-if="showPasswordForm" @submit.prevent="changeProfile">
+            <input type="email" v-model="editUser.email" placeholder="New Email" required />
+            <input type="text" v-model="editUser.username" placeholder="New Username" required/>
+            <input type="password" v-model="editUser.password" placeholder="New Password" required />
             <input type="password" v-model="confirmPassword" placeholder="Confirm New Password" required />
             <button class="submit-btn" type="submit">Submit</button>
           </form>
@@ -87,44 +93,63 @@ handyman
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
+
 import axios from '../axiosconfig';
 const router = useRouter();
+import useAuth from "../composables/useAuth";
+const { logout, getUser, updateUser } = useAuth();
 
-const user = ref({ username: '', email: '', role: '' });
-
+const user = ref({ user_id: '', username: '', email: '', role: '', password: '' });
+const editUser = ref({ user_id: '', username: '', email: '', role: '', password: '' });
 const currentView = ref('profile');
 const showPasswordForm = ref(false);
-
-const oldPassword = ref('');
-const newPassword = ref('');
 const confirmPassword = ref('');
 
-const fetchUser = async () => {
-  const res = await axios.get('/user/me');
+async function fetchUser() {
+  const userData = await getUser();
   user.value = {
-    username: res.data.username,
-    email: res.data.email,
-    role: res.data.user_role === 'admin' ? 'Admin' : 'User'
+    ...userData,
+    role: userData.user_role === "admin" 
+      ? "Administrateur" 
+      : "User" 
   };
 };
 
-const changePassword = async () => {
-  if (newPassword.value !== confirmPassword.value) {
-    alert("Passwords don't match");
-    return;
-  }
+async function handleLogout() {
+  await logout();
+  alert("Goodbye "+ user.value.username + " !"); 
+  router.push("/");
+}
 
+/*async function submitEdit() {
   try {
-    await axios.post('/user/change-password', {
-      oldPassword: oldPassword.value,
-      newPassword: newPassword.value
-    });
-    alert('Password changed successfully');
-    showPasswordForm.value = false;
-  } catch (err) {
-    alert('Failed to change password');
+    editUser.value.user_id = user.value.user_id;
+    await updateUser(editUser.value);
+    alert("Profile updated successfully!");
+    isEditing.value = false;
+    fetchUser();
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    alert("Failed to update profile.");
   }
-};
+}*/
+async function changeProfile() {
+  try {
+    if (editUser.value.password !== confirmPassword.value) {
+      alert("Passwords do not match! : pass1 = " + editUser.value.password + " pass2 = " + confirmPassword.value +  "email = " + editUser.value.email);
+      return;
+    }
+    editUser.value.user_id = user.value.user_id;
+    editUser.value.role = user.value.role;
+    await updateUser(editUser.value);
+    alert("Profile updated successfully!");
+    showPasswordForm.value = false;
+    fetchUser();
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    alert("Failed to update profile.");
+  }
+}
 
 const orders = ref([]);
 
@@ -318,4 +343,75 @@ onMounted(() => {
 .material-symbols-outlined{
   font-size: 150px;
 }
+
+/*CSS DU BOUTON*/
+  /* From Uiverse.io by vinodjangid07 */ 
+ 
+  .Btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 60px; /* Increased width */
+    height: 60px; /* Increased height */
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition-duration: .3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+    background-color: rgb(255, 65, 65);
+    margin-left: 90%; /* Align the button to the right */
+  }
+
+  /* plus sign */
+  .sign {
+    width: 100%;
+    transition-duration: .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sign svg {
+    width: 20px; /* Increased size */
+  }
+
+  .sign svg path {
+    fill: white;
+  }
+  /* text */
+  .text {
+    position: absolute;
+    right: 0%;
+    width: 0%;
+    opacity: 0;
+    color: white;
+    font-size: 1.4em; /* Slightly larger font size */
+    font-weight: 600;
+    transition-duration: .3s;
+  }
+  /* hover effect on button width */
+  .Btn:hover {
+    width: 140px; /* Adjusted width for hover */
+    border-radius: 40px;
+    transition-duration: .3s;
+  }
+
+  .Btn:hover .sign {
+    width: 30%;
+    transition-duration: .3s;
+    padding-left: 5px;
+  }
+  /* hover effect button's text */
+  .Btn:hover .text {
+    opacity: 1;
+    width: 70%;
+    transition-duration: .3s;
+    padding-right: 10px;
+  }
+  /* button click effect*/
+  .Btn:active {
+    transform: translate(2px ,2px);
+  }
 </style>
