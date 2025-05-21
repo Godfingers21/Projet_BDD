@@ -20,7 +20,10 @@
           <div class="input-box">
             <input type="email" placeholder="Your email address" v-model="email" required />
           </div>
-          <div class="input-box">
+          <div v-if="isLogin" class="input-box">
+            <input type="password" placeholder="Your password" v-model="password" required />
+          </div>
+          <div v-if="!isLogin" class="input-box">
             <input type="password" placeholder="Create a password" v-model="password" required />
           </div>
           <div v-if="!isLogin" class="input-box">
