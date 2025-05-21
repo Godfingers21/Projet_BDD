@@ -13,6 +13,9 @@
 
     <!-- Main content -->
     <section class="main-content">
+      <div class="header-img-comtainer">
+          <img src="../assets/" alt="Header" class="header-banner" />
+      </div>
       <div v-if="currentView === 'profile'" class="profile-view">
         <div class="top-section">
           <img class="avatar" src="../assets/no-profile-photo.jpeg" alt="avatar" />
@@ -165,5 +168,19 @@ onMounted(fetchUser);
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
+}
+
+.header-img-comtainer{
+  width: 100%;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  overflow: hidden;
+
+}
+.header-img-comtainer img{
+  width: 100%;
+  object-fit: cover;
 }
 </style>
