@@ -35,8 +35,13 @@ const login = async (req, res) => {
 };
 
 const logout = (req, res) => {
-    res.clearCookie("token");
-    res.json({ message: "Logout successful" });
+    try {
+        console.log("Cookies before clearing:", req.cookies);
+        res.clearCookie("token", { httpOnly: true, secure: true, sameSite: "None" });
+        res.json({ message: "Logout successful" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 module.exports = {
