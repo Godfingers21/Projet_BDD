@@ -1,7 +1,5 @@
 <template>
-    <div class="header-container">
-        <!--mettre image header-->
-    </div>
+    <img src="../assets/header-catalog-image.jpg" alt="Header" class="header-banner" />
     <div class="content-container">
         <h1 class="logo">Kaya</h1>
         <div class="who-section">
@@ -21,13 +19,13 @@ Games that create memories, not just winners. </p>
 </template>
 
 <style scoped>
-.header-container{
-    margin: 0;
-    width: 100%;
-    height: 200px;
-    background-color: rgb(47, 255, 0);
-    background-image: url('../assets/header-catalog-image.jpg');
+.header-banner {
+  width: 100vw;
+  height: 400px;
+  object-fit: cover;
+  display: block;
 }
+
 
 .content-container{
     display: flex;

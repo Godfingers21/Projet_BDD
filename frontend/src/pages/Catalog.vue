@@ -1,5 +1,5 @@
 <template>
-  <HeaderImage imageUrl='../asset/header-catalog-image.jpg' />
+  <img src="../assets/header-catalog-image.jpg" alt="Header" class="header-banner" />
   <div class="catalog-container">
     <div class="catalog-header">
       <h1 class="catalog-title">Board Games Collection</h1>
@@ -471,6 +471,12 @@ export default {
 </script>
 
 <style scoped>
+.header-banner {
+  width: 100vw;
+  height: 400px;
+  object-fit: cover;
+  display: block;
+}
 .catalog-container {
   padding: 120px 24px 40px 24px;
   max-width: 1400px;

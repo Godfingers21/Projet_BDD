@@ -69,7 +69,7 @@
                 <span>${{ getTotalWithTax() }}</span>
               </div>
 
-              <button class="checkout-btn">Checkout</button>
+              <router-link to="/payment"><button class="checkout-btn">Checkout</button></router-link>
             </div>
 
         </div>
@@ -136,7 +136,7 @@ export default {
 
 <style scoped>
 main{
-    height: 100vh;
+    min-height: 100vh;
     margin: 0 160px;
 }
 .content-container{
@@ -146,7 +146,6 @@ main{
     align-items: top;
 }
 .mycart-component{
-    height: 80vh;
     width: 50vw;
     margin-right: 20px;
 
