@@ -79,7 +79,6 @@
         <h2>Settings</h2>
         <div class="settings-content">
           <span class="material-symbols-outlined">
-handyman
 </span>
           <p>Available soon !</p>
         </div>

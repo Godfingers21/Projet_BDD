@@ -159,7 +159,7 @@ export default {
   methods: {
     async fetchUserInfo() {
         try {
-        const response = await axios.get("/user/me", { withCredentials: true });
+        const response = await axios.get("/user/me");
         this.email = response.data.email;
         } catch (error) {
         console.error("Erreur lors de la récupération de l'email :", error);
@@ -199,7 +199,7 @@ export default {
           last4_card: last4,
           address: this.address,
           cart_items: this.cart
-        }, { withCredentials: true });
+        });
 
         alert(`Commande passée avec succès ! Numéro: ${response.data.order_num}`);
 
