@@ -14,7 +14,36 @@ Kaya was built on a simple idea: to make board games more accessible to everyone
 Because in the end, it’s not about who wins.
 It’s about the memories you make while playing.
 Games that create memories, not just winners. </p>
-        </div>
+        <h2 class="title">Our Story</h2>
+    <p>
+      Kaya was born from a simple realization between friends: nights together weren’t the same anymore. We missed the joy of face-to-face games, the friendly tension of competition, and the unforgettable stories that came from just one round. So, we created Kaya — a platform dedicated to bringing those moments back.
+    </p>
+
+    <h2 class="title">Why Board Games?</h2>
+    <p>
+      We see board games as more than entertainment. They're educational, social, and intergenerational. They build strategy, memory, cooperation, and patience. Every game is a doorway to meaningful, shared experiences.
+    </p>
+
+    <h2 class="title">A Sustainable Alternative</h2>
+    <p>
+      By offering rentals, Kaya supports a more sustainable lifestyle. Less impulse buying, more reusability. We believe in a future where sharing is better than owning — where fun doesn’t come at the cost of waste.
+    </p>
+
+    <h2 class="title">For Everyone</h2>
+    <p>
+      Whether you’re a seasoned gamer, a parent looking for screen-free activities, a youth center leader, or a company planning a team night — Kaya is for you. Our platform adapts to all player profiles.
+    </p>
+
+    <h2 class="title">Accessible and Simple</h2>
+    <p>
+      With an intuitive interface, a rich catalog, and flexible subscription plans, Kaya makes the board game experience effortless. Browse, play, exchange — all in just a few clicks.
+    </p>
+
+    <h2 class="title">More Than Just Winning</h2>
+    <p>
+      At Kaya, it’s not about who wins. It’s about the memories you create while playing. Games that create moments — not just winners.
+    </p>
+  </div>
     </div>
 </template>
 
@@ -26,12 +55,29 @@ Games that create memories, not just winners. </p>
   display: block;
 }
 
-
-.content-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 120px;
+.content-container {
+  margin: 80px 220px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  line-height: 1.9;
+  text-align: justify;
 }
+
+.logo {
+  font-size: 2.4rem;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 1.6rem;
+  color: #53cf90;
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.who-section p {
+  margin-bottom: 20px;
+}
+
 </style>

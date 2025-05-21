@@ -848,6 +848,7 @@ export default {
 .close-modal {
   position: absolute;
   top: 15px;
+  right: 10px;
   background: none;
   border: none;
   font-size: 24px;
@@ -892,7 +893,7 @@ export default {
 
 .game-modal-info h2 {
   font-size: 1.8rem;
-  margin: 15px 0 20px 0;
+  margin: 10vh 0px 20px 0;
   color: #000000;
   text-align: left;
   margin-left: 10px;
@@ -959,7 +960,8 @@ export default {
 }
 
 .buy-button {
-  margin: 20px 10px;
+  margin: 20px 0px;
+  width: 100%;
   background: #27ae60;
   color: white;
   border: none;
@@ -970,6 +972,8 @@ export default {
   cursor: pointer;
   transition: background 0.2s;
   align-self: flex-start;
+  box-sizing: border-box;
+
 }
 
 .buy-button:hover {
