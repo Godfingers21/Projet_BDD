@@ -43,7 +43,15 @@
                 
               </div>
             </div>
-
+            <div class="mycart-component" v-else>
+              <h2>My cart</h2>
+              <div class="else-container">
+                <span class="material-symbols-outlined">
+                air
+                </span>
+                  <h3>Your cart is empty</h3>
+              </div>
+            </div>
             <div class="payment-component">
               <h2>Summary</h2>
 
@@ -54,7 +62,7 @@
 
               <div class="line">
                 <span>Estimated Shipping & Handling</span>
-                <span>$4.50</span> <!--Pareil pour tout le monde meme en alaska-->
+                <span>${{ getShipping() }}</span> <!--Pareil pour tout le monde meme en alaska-->
               </div>
 
               <div class="line">
@@ -120,15 +128,19 @@ export default {
     },
     getTax() { //vous aimez ? c'est francais (bruh)
       const subtotal = parseFloat(this.getSubtotal());
-      const shipping = 4.5;
+      const shipping = parseFloat(this.getShipping());
       const tax = (subtotal + shipping) * 0.2;
       return tax.toFixed(2);
     },
     getTotalWithTax() {
       const subtotal = parseFloat(this.getSubtotal());
-      const shipping = 4.5;
+      const shipping = parseFloat(this.getShipping());
       const tax = parseFloat(this.getTax());
       return (subtotal + shipping + tax).toFixed(2);
+    },
+
+    getShipping() {
+      return this.cart.length > 0 ? 4.5.toFixed(2) : (0).toFixed(2);
     }
   }
 }
@@ -314,5 +326,14 @@ main{
 
 .span-taxe{
   color: grey;
+}
+
+.else-container{
+  color: lightgrey
+
+}
+.else-container .material-symbols-outlined{
+  margin: 60px 0px 30px 0px;
+  font-size: 150px;
 }
 </style>

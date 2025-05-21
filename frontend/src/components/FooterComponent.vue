@@ -9,29 +9,29 @@
         <h3>Find out more</h3>
         <ul>
           <li><router-link to="/catalog">New Releases</router-link></li>
-          <li><router-link to="#">Trending</router-link></li>
-          <li><router-link to="#">Our Catalog</router-link></li>
-          <li><router-link to="#">1v1 Games</router-link></li>
-          <li><router-link to="#">Family Games</router-link></li>
+          <li><router-link to="/catalog">Trending</router-link></li>
+          <li><router-link to="/catalog">Our Catalog</router-link></li>
+          <li><router-link to="/catalog">1v1 Games</router-link></li>
+          <li><router-link to="/catalog">Family Games</router-link></li>
         </ul>
       </div>
 
       <div class="footer-column">
         <h3>Your Account</h3>
         <ul>
-          <li><router-link to="/login">My Account</router-link></li>
-          <li><router-link to="#">See My Orders</router-link></li>
-          <li><router-link to="#">Track My Order</router-link></li>
-          <li><router-link to="#">Preferences and settings</router-link></li>
+          <li><router-link to="/profile">My Account</router-link></li>
+          <li><router-link to="/profile">See My Orders</router-link></li>
+          <li><router-link to="/profile">Track My Order</router-link></li>
+          <li><router-link to="/profile">Preferences and settings</router-link></li>
         </ul>
       </div>
 
       <div class="footer-column">
         <h3>About Us</h3>
         <ul>
-          <li><router-link to="#">Who are we?</router-link></li>
-          <li><router-link to="#">Privacy Policy</router-link></li>
-          <li><router-link to="#">Terms of Service</router-link></li>
+          <li><router-link to="/aboutus">Who are we?</router-link></li>
+          <li><router-link to="/privacy">Privacy Policy</router-link></li>
+          <li><router-link to="/privacy">Terms of Service</router-link></li>
         </ul>
       </div>
 
@@ -39,6 +39,7 @@
         <h3>Contact Us</h3>
         <ul>
           <li><a href="mailto:help.support@kaya.com">help.support@kaya.com</a></li>
+          <li><a href="mailto:help.support@kaya.com">+33 1 45 67 89 10</a></li>
         </ul>
       </div>
     </div>
@@ -77,7 +78,7 @@ onMounted(() => {
 
 .footer-content .logo {
   font-size: 3rem;
-  font-weight: 500;
+  font-weight: bolder;
   margin-left: 50px;
 }
 
