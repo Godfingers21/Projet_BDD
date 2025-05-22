@@ -37,7 +37,7 @@
 
         <div class="form-row">
           <div class="form-group third">
-            <input v-model="address.code_postal" placeholder="Postal Code" required />
+            <input v-model="address.code_postal" maxlength="5" placeholder="Postal Code" required />
           </div>
           <div class="form-group third">
             <input v-model="address.region" placeholder="State" required />
@@ -60,18 +60,18 @@
           <h3>Add Card</h3>
 
           <div class="form-group">
-            <input v-model="card" maxlength="16" placeholder="•••• •••• •••• 3495" required />
+                <input v-model="card" maxlength="19" @input="formatCardNumber" placeholder="•••• •••• •••• 1234" required />
           </div>
           <div class="form-row">
             <div class="form-group half">
                 <input v-model="card_exp" @input="formatCardDate" placeholder="MM/YY"/>             
             </div>
             <div class="form-group half">
-                <input v-model="card_cvv" placeholder="CVV" />      
+                <input v-model="card_cvv" maxlength="3" placeholder="CVV" />      
             </div>
           </div>
             <div class="form-group">
-                <input v-model="card_name" placeholder="Cardholder Name"/>
+                <input v-model="card_name" maxlength="40" placeholder="Cardholder Name"/>
             </div>
         </div>
 
@@ -173,6 +173,16 @@ export default {
         }
 
         this.card_exp = val.slice(0, 5); // Bloque à 5 caractères
+    },
+    formatCardNumber() {
+        let digits = this.card.replace(/\D/g, ''); // Supprime tous les caractères non numériques
+        digits = digits.substring(0, 16); // Limite à 16 chiffres
+        let formatted = '';
+        for (let i = 0; i < digits.length; i += 4) {
+          if (i > 0) formatted += ' ';
+          formatted += digits.substring(i, i + 4);
+        }
+        this.card = formatted;
     },
 
 

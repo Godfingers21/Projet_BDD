@@ -29,19 +29,14 @@
                 <p class="role">Account type: {{ user.role }}</p>
                 <p>Email: {{ user.email }}</p>
             </div>
-            <button @click="showPasswordForm = !showPasswordForm" class="edit-btn">
-              {{ showPasswordForm ? 'Cancel' : 'Edit' }}
-            </button>
+            
           </div>
         </div>
-
-        <button @click="handleLogout" class="Btn">
-          <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
-          <div class="text">Logout</div>
-        </button>
-
+        
         <div class="edit-password">
-
+        <button @click="showPasswordForm = !showPasswordForm" class="edit-btn">
+              {{ showPasswordForm ? 'Cancel' : 'Edit' }}
+        </button>
 
           <form v-if="showPasswordForm" @submit.prevent="changeProfile">
             <input type="email" v-model="editUser.email" placeholder="New Email" required />
@@ -51,6 +46,13 @@
             <button class="submit-btn" type="submit">Submit</button>
           </form>
         </div>
+        <div class="btn-container">
+          <button @click="handleLogout" class="Btn">
+            <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+            <div class="text">Logout</div>
+          </button>
+        </div>
+        
       </div>
       <div v-else-if="currentView === 'orders'" class="orders-view">
         <h2>My Orders</h2>
@@ -78,8 +80,7 @@
       <div v-else-if="currentView === 'settings'">
         <h2>Settings</h2>
         <div class="settings-content">
-          <span class="material-symbols-outlined">
-</span>
+          <span class="material-symbols-outlined">handyman</span>
           <p>Available soon !</p>
         </div>
       </div>
@@ -208,9 +209,12 @@ onMounted(() => {
 }
 .profile-view {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: top;
+  justify-content: space-between;
   gap: 30px;
   padding: 50px;
+  height: 55vh;
 }
 .top-section {
   display: flex;
@@ -252,11 +256,13 @@ onMounted(() => {
 }
 .edit-password{
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: left;
 }
 .edit-password form {
-  margin-left: 20px;
+  margin-top: 20px;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -270,13 +276,14 @@ onMounted(() => {
 }
 
 .edit-btn {
-  width: 10vw;
+  width: 13vw;
+  margin-top: 50px;
   padding: 15px;
   background-color: #000000;
   color: white;
   border: none;
   font-weight: bold;
-  border-radius: 999px;
+  border-radius: 999px !important;
   cursor: pointer;
 }
 
@@ -355,12 +362,10 @@ onMounted(() => {
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    position: relative;
     overflow: hidden;
     transition-duration: .3s;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
     background-color: rgb(255, 65, 65);
-    margin-left: 90%; /* Align the button to the right */
   }
 
   /* plus sign */
@@ -383,7 +388,6 @@ onMounted(() => {
   .text {
     position: absolute;
     right: 0%;
-    width: 0%;
     opacity: 0;
     color: white;
     font-size: 1.4em; /* Slightly larger font size */
@@ -405,12 +409,17 @@ onMounted(() => {
   /* hover effect button's text */
   .Btn:hover .text {
     opacity: 1;
-    width: 70%;
+    width: 15%;
     transition-duration: .3s;
-    padding-right: 10px;
   }
   /* button click effect*/
   .Btn:active {
     transform: translate(2px ,2px);
+  }
+
+  .btn-container{
+    display: flex;
+    justify-content: center;
+    width: 10vw;
   }
 </style>

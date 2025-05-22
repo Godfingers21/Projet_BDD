@@ -37,7 +37,7 @@ const updateCartCount = () => {
 onMounted(() => {
   checkAuth();
   updateCartCount();
-  window.addEventListener("storage", updateCartCount);
+  setInterval(updateCartCount, 500);
 });
 
 </script>

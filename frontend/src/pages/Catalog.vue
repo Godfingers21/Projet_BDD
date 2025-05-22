@@ -388,6 +388,7 @@ export default {
         });
       }
       localStorage.setItem("cart", JSON.stringify(cart));
+      window.dispatchEvent(new Event("update-cart"));
       alert(`${game.name} added to cart!`);
     },
 

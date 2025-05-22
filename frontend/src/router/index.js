@@ -10,7 +10,7 @@ import Success from "../pages/SuccessView.vue";
 import PrivacyPolicyView from "../pages/PrivacyPolicyView.vue";
 
 const routes = [
-  { path: "/", component: HomePage },
+  { path: "/", component: HomePage, meta: { hideFooter: true, hideNavbar: false  }},
   { path: "/login", component: LoginRegister, meta: { hideFooter: true, hideNavbar: true }},
   { path: "/catalog", component: Catalog },
   { path: "/profile", component: Profile, meta: { hideFooter: true, hideNavbar: false  }},

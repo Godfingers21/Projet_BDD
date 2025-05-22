@@ -1,4 +1,4 @@
-<<template>
+<template>
   <div id="app">
     <NavBar v-if="!hideNavbar" />
     <router-view />
